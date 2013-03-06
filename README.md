@@ -15,7 +15,6 @@ All contributions require a [Dojo Foundation CLA](http://dojofoundation.org/abou
 
 * Manual installation by dropping dcordova as a sibling of the top level Dojo modules:
  * dojo
- * dijit
  * dcordova
 
  To install the latest master, go to the root Dojo installation directory and clone dcordova from github
