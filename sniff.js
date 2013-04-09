@@ -6,8 +6,8 @@
 //	"cordova-capture-image"			Returns true if has image capture access, else false
 //	"cordova-capture-video"			Returns true if has video capture access, else false
 //	"cordova-compass"				Returns true if has compass access, else false
-//	"cordova-connection-ethernet"   Returns true if has ethernet connection, else undefined
-//  "cordova-connection-wifi"		Returns true if has wifi connection, else undefined
+//	"cordova-connection-ethernet"	Returns true if has ethernet connection, else undefined
+//	"cordova-connection-wifi"		Returns true if has wifi connection, else undefined
 //	"cordova-connection-cell-2g"	Returns true if has 2g connection, else undefined
 //	"cordova-connection-cell-3g"	Returns true if has 3g connection, else undefined
 //	"cordova-connection-cell-4g"	Returns true if has 4g connection, else undefined
@@ -15,7 +15,6 @@
 //	"cordova-connection-unknown"	Returns true if has an unknown connection, else undefined
 //	"cordova-contacts"				Returns true if has contact list access, else false
 //	"cordova-device"				Returns device object if running on a device, else false
-//	"cordova-platform"				Returns platform name (eg "Android") if running on a device, else false
 //	"cordova-android"				Returns Android OS version if running on Android, else false
 //	"cordova-iphone"				Returns iPhone OS version if running on iPhone, else false
 //	"cordova-ipad"					Returns iPad OS version if running on iPad, else false
@@ -30,7 +29,7 @@
 //	"cordova-confirm"				Returns true if has native confirm dialog, else false
 //	"cordova-beep"					Returns true if can sound a device beep, else false
 //	"cordova-storage"				Returns true if has local database access, else false
-define(["dojo/has"], function(has){
+define(["dojo/has", "./deviceReady!"], function(has){
 	has.add("cordova", function(){
 		return window.device ? window.device.cordova : false;
 	});
@@ -69,9 +68,7 @@ define(["dojo/has"], function(has){
 	has.add("cordova-contacts", function(){
 		return !!(has("cordova") && navigator.contacts);
 	});
-	has.add("cordova-platform", function(){
-		return has("cordova") ? window.device.platform : false;
-	});
+	// do we want cordova specific flags here? Should be agnostic flags
 	has.add("cordova-android", function(){
 		return (window.device && window.device.platform.match(/android/i) ) ? window.device.version : false;
 	});
@@ -114,4 +111,5 @@ define(["dojo/has"], function(has){
 	has.add("cordova-storage", function(){
 		return !!(has("cordova") && window.openDatabase);
 	});
+	return has;
 });
