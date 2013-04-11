@@ -5,8 +5,6 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/store/util/QueryResults"],
 		// summary:
 		//		This is a dojo/store wrapper for Cordova Contacts API.
 
-		idProperty: "id",
-
 		contactFields: ["id", "displayName", "name", "phoneNumbers", "emails", "addresses"],
 
 		constructor: function(options){
@@ -23,17 +21,17 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/store/util/QueryResults"],
 			//	returns: Object
 			//		The object in the store that matches the given id.
 			var deferred = new Deferred();
-			this._find([this.idProperty],
+			this._find(["id"],
 				function(contacts){
 					// search is by keyword on all fields, so we need to double check
 					// we did not get false positive results
 					for(var i = 0; i < contacts.length; i++){
-						if(contacts[i][this.idProperty] == id){
+						if(contacts[i]["id"] == id){
 							deferred.resolve(contacts[i]);
 							return;
 						}
 					}
-					deferred.reject(new Error(this.idProperty + " not match."));
+					deferred.reject(new Error("id not match."));
 				},
 				deferred, id);
 			return deferred.promise;
@@ -45,7 +43,7 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/store/util/QueryResults"],
 			// object: Object
 			//		The object to get the identity from
 			//	returns: String|Number
-			return object[this.idProperty];
+			return object["id"];
 		},
 
 		query: function(query, options){
@@ -65,7 +63,7 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/store/util/QueryResults"],
 			var opts = new ContactFindOptions();
 			var fields = (options && options.contactFields) || this.contactFields;
 			opts.filter = query;
-			opts.multiple = options.hasOwnerProperty("multiple") ? options.multiple : true;
+			opts.multiple = (options && options.hasOwnerProperty("multiple")) ? options.multiple : true;
 			navigator.contacts.find(fields, success, function(error){deferred.reject(error)}, opts);
 		},
 
@@ -82,16 +80,14 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/store/util/QueryResults"],
 		},
 
 		add: function(object, directives){
-			if(directives && directives.hasOwnProperty(this.idProperty)){
+			if(directives && directives.hasOwnProperty("id")){
 				object.id = directives.id;
 			}
 			var deferred = new Deferred();
-			if(object.hasOwnProperty(this.idProperty)){
+			if(object.hasOwnProperty("id")){
 				// if the object has a save method it has been created, use it, otherwise create it before
 				var contact = typeof object.save === "function" ? object : navigator.contacts.create(object);
 				contact.save(function(contact){deferred.resolve(contact)}, function(error){deferred.reject(error)});
-			}else{
-				deferred.reject(new Error("object must has an "+this.idProperty+" property"));
 			}
 			return deferred.promise;
 		},
