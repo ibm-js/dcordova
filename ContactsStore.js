@@ -1,11 +1,11 @@
 define(["dojo/_base/declare", "dojo/Deferred", "dojo/store/util/QueryResults"],
 	function(declare, Deferred, QueryResults){
 
-	// TODO is Cordova flexible on what the "id" property is? if yes re-introduce idProperty property
-
 	return declare(null, {
 		// summary:
 		//		This is a dojo/store wrapper for Cordova Contacts API.
+
+		idProperty: "id",
 
 		contactFields: ["id", "displayName", "name", "phoneNumbers", "emails", "addresses"],
 
@@ -15,22 +15,20 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/store/util/QueryResults"],
 			declare.safeMixin(this, options);
 		},
 
-		get: function(id, options){
+		get: function(id){
 			//	summary:
 			//		Retrieves an object by its identity.
 			//	id: Number
 			//		The identity to use to lookup the object
-			//	options: Object
-			//		Accepts contactFields property
 			//	returns: Object
 			//		The object in the store that matches the given id.
 			var deferred = new Deferred();
-			this._find((options && options.contactFields) || this.contactFields,
+			this._find([this.idProperty],
 				function(contacts){
 					// search is by keyword on all fields, so we need to double check
 					// we did not get false positive results
 					for(var i = 0; i < contacts.length; i++){
-						if(contacts[i]["id"] == id){
+						if(contacts[i][this.idProperty] == id){
 							deferred.resolve(contacts[i]);
 							return;
 						}
@@ -46,28 +44,28 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/store/util/QueryResults"],
 			//		Returns an object's identity
 			// object: Object
 			//		The object to get the identity from
-			//	returns: Number
-			// TODO Cordova id is a number?
-			return object["id"];
+			//	returns: String|Number
+			return object[this.idProperty];
 		},
 
 		query: function(query, options){
 			var deferred = new Deferred();
-			this._find((options && options.contactFields) || this.contactFields,
+			this._find(query?query:"",
 				function(contacts){
 					deferred.resolve(contacts);
 				},
-				deferred, query?query:"");
+				deferred, options);
 			// TODO: what about queryEngine?
 			return new QueryResults(deferred.promise);
 		},
 
 		// All the code below depends on Cordova Contacts API
 
-		_find: function(fields, success, deferred, keyword){
+		_find: function(query, success, deferred, options){
 			var opts = new ContactFindOptions();
-			opts.filter = keyword;
-			opts.multiple = true;
+			var fields = (options && options.contactFields) || this.contactFields;
+			opts.filter = query;
+			opts.multiple = options.hasOwnerProperty("multiple") ? options.multiple : true;
 			navigator.contacts.find(fields, success, function(error){deferred.reject(error)}, opts);
 		},
 
@@ -83,11 +81,18 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/store/util/QueryResults"],
 			return deferred.promise;
 		},
 
-		add: function(object){
-			// if the object has a save method it has been created, use it, otherwise create it before
-			var contact = typeof object.save === "function" ? object : navigator.contacts.create(object);
+		add: function(object, directives){
+			if(directives && directives.hasOwnProperty(this.idProperty)){
+				object.id = directives.id;
+			}
 			var deferred = new Deferred();
-			contact.save(function(contact){deferred.resolve(contact)}, function(error){deferred.reject(error)});
+			if(object.hasOwnProperty(this.idProperty)){
+				// if the object has a save method it has been created, use it, otherwise create it before
+				var contact = typeof object.save === "function" ? object : navigator.contacts.create(object);
+				contact.save(function(contact){deferred.resolve(contact)}, function(error){deferred.reject(error)});
+			}else{
+				deferred.reject(new Error("object must has an "+this.idProperty+" property"));
+			}
 			return deferred.promise;
 		},
 
