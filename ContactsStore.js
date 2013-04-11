@@ -65,7 +65,7 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/store/util/QueryResults"],
 			var opts = new ContactFindOptions();
 			var fields = (options && options.contactFields) || this.contactFields;
 			opts.filter = query;
-			opts.multiple = options.hasOwnerProperty("multiple") ? options.multiple : true;
+			opts.multiple = (options && options.hasOwnerProperty("multiple")) ? options.multiple : true;
 			navigator.contacts.find(fields, success, function(error){deferred.reject(error)}, opts);
 		},
 
