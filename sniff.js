@@ -29,10 +29,8 @@
 //	"cordova-confirm"				Returns true if has native confirm dialog, else false
 //	"cordova-beep"					Returns true if can sound a device beep, else false
 //	"cordova-storage"				Returns true if has local database access, else false
-define(["dojo/has", "./deviceReady!"], function(has){
-	has.add("cordova", function(){
-		return window.device ? window.device.cordova : false;
-	});
+define(["dojo/has"].concat(window.cordova?["dcordova/deviceReady!"]:[]), function(has){
+	has.add("cordova", window.device ? window.device.cordova : false);
 	has.add("cordova-accelerometer", function(){
 		return !!(has("cordova") && navigator.accelerometer);
 	});
