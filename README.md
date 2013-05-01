@@ -1,6 +1,6 @@
 # dcordova
 
-This project provides utilities when running Dojo inside a Cordova container for Dojo 1.8 and higher.
+This project provides AMD, promise-based wrapper for Cordova APIs useful for AMD-based and/or Dojo-based applications.
 
 ## Status
 
@@ -34,3 +34,4 @@ TODO
 
 * Christophe Jolif (IBM CCLA, committer)
 * Christophe Mitchell (IBM CCLA, committer)
+* (IBM CCLA, contributor)

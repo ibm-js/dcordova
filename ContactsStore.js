@@ -54,7 +54,8 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/when", "dojo/store/util/Que
 		},
 
 		query: function(query, options){
-			var deferred = new Deferred();
+			var findDeferred = new Deferred(), deferred = new Deferred();
+			var self = this;
 			// get a minimal cordova API query from a the dojo/store type of query
 			var cordovaQuery = "", key;
 			for(key in query){
@@ -65,10 +66,15 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/when", "dojo/store/util/Que
 			}
 			this._find(cordovaQuery,
 				function(contacts){
-					deferred.resolve(contacts);
+					findDeferred.resolve(contacts);
 				},
-				deferred, options);
-			return new QueryResults(this.queryEngine(query, options)(deferred.promise));
+				findDeferred, options);
+			when(findDeferred, function(contacts){
+				deferred.resolve(self.queryEngine(query, options)(contacts));
+			}, function(error){
+				deferred.reject(error);
+			});
+			return QueryResults(deferred.promise);
 		},
 
 		// All the code below depends on Cordova Contacts API
