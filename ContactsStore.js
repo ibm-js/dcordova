@@ -5,6 +5,10 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/when", "dojo/store/util/Que
 		// summary:
 		//		This is a dojo/store wrapper for Cordova Contacts API.
 
+		// displayName: Boolean
+		//		Whether the store must force the presence of displayName property when null. Default is false.
+		displayName: false,
+
 		// contactsFields: String[]
 		//		Defines array of contact fields that are returned when doing a query
 		contactFields: ["id", "displayName", "name", "phoneNumbers", "emails", "addresses", "organizations"],
@@ -33,6 +37,7 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/when", "dojo/store/util/Que
 					// we did not get false positive results
 					var i;
 					for(i = 0; i < contacts.length; i++){
+						// Cordova advertise String ids but at least sometimes we get Number...
 						if(contacts[i].id == id){
 							deferred.resolve(contacts[i]);
 							return;
@@ -70,6 +75,15 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/when", "dojo/store/util/Que
 				},
 				findDeferred, options);
 			when(findDeferred, function(contacts){
+				if(self.displayName){
+					var contact, i;
+					for(i = 0; i < contacts.length; i++){
+						contact = contacts[i];
+						if(!contact.displayName && contact.name.formatted){
+							contact.displayName = contact.name.formatted;
+						}
+					}
+				}
 				deferred.resolve(self.queryEngine(query, options)(contacts));
 			}, function(error){
 				deferred.reject(error);
