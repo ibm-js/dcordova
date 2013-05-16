@@ -122,7 +122,13 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/when", "dojo/store/util/Que
 
 		_put: function(object, deferred){
 			var contact = typeof object.save === "function" ? object : navigator.contacts.create(object);
-			contact.save(function(contact){deferred.resolve(contact);}, function(error){deferred.reject(error);});
+			var self = this;
+			contact.save(function(contact){
+				if(self.displayName && !contact.displayName && contact.name.formatted){
+					contact.displayName = contact.name.formatted;
+				}
+				deferred.resolve(contact);
+			}, function(error){deferred.reject(error);});
 		},
 
 		add: function(object, directives){
