@@ -32,6 +32,5 @@ TODO
 
 ## Credits
 
-* Christophe Jolif (IBM CCLA, committer)
-* Christophe Mitchell (IBM CCLA, committer)
-* (IBM CCLA, contributor)
+* Christophe Jolif (IBM CCLA)
+* Christophe Mitchell (IBM CCLA)
