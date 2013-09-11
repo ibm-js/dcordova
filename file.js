@@ -1,7 +1,6 @@
 define([
-	"dojo/_base/lang",
-	"dojo/_base/Deferred"
-], function( lang, Deferred ) {
+	"dojo/Deferred"
+], function( Deferred ){
 
 	var file = {
 		// summary:
