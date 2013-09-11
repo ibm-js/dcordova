@@ -7,7 +7,7 @@ define([
 		// summary:
 		//		Promised based wrapper for Cordova File API
 
-		getFile: function( filename ) {
+		getFile: function( filename ){
 			// summary:
 			//		Get a file by name
 			// filename:
@@ -17,29 +17,28 @@ define([
 			// example:
 			// |	file.getFile("myFile").then(function(file) { ... }, function(err) { ... } );
 			var def = new Deferred();
-			var error = function(err) { def.reject(err); }
 		    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
-		    	function(fs) {
+		    	function(fs){
 					fs.root.getFile(filename, {create:true, exclusive:false},
-						function(fileEntry) {
+						function(fileEntry){
 							fileEntry.file(
-								function(file) {
+								function(file){
 									file.url = fileEntry.toURL();
 									def.resolve( file );
 								},
-						    	error
+								def.reject
 							);//F
 						},
-				    	error
+				    	def.reject
 				    );//FE
 				},
-		    	error
+		    	def.reject
 		    );//FS
 		    return def.promise;
 		},
 
 		//-----------------------------------------------------------------------------------------
-		getDirectory: function( /*String*/dirpath ) {
+		getDirectory: function( /*String*/dirpath ){
 			// summary:
 			//		Get (or make) directory pointed to by path
 			// dirpath:
@@ -47,34 +46,33 @@ define([
 			// return:
 			//		Promise to return directory object
 			var def = new Deferred();
-			var error = function(err) { def.reject(err); }
 			var dirs = dirpath.split("/");
 			//-- Get rid of any empty segments.
-			for( var x = dirs.length-1; x >= 0; x-- ) {
-				if ( !dirs[x].length ) { dirs.splice(x,1); }
+			for( var x = dirs.length-1; x >= 0; x-- ){
+				if( !dirs[x].length ){ dirs.splice(x,1); }
 			}
 
-			var getDir = function(de, dirs, callback) {
+			var getDir = function(de, dirs, callback){
 				var dir = dirs.splice(0,1)[0];  // returns array, want 1st (single) node
 				de.getDirectory( dir, {create:true, exclusive:false},
-					function( d ) {
-						if ( dirs.length ) {
+					function( d ){
+						if( dirs.length ){
 							getDir( d, dirs, callback );
-						} else {
+						}else{
 							callback( d );
 						}
 					},
-			    	error
+			    	def.reject
 				);
 			};
 
 		    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
-		    	function(fs) {
-					getDir( fs.root, dirs, function( finalDir ) {
+		    	function(fs){
+					getDir( fs.root, dirs, function( finalDir ){
 						def.resolve( finalDir );
 					});
 				},
-		    	error
+		    	def.reject
 		    );//FS
 		    return def.promise;
 		},
@@ -89,14 +87,13 @@ define([
 			// newName:
 			//		Optional new name for file. Required if same source/target directory
 			var def = new Deferred();
-			var error = function(err) { def.reject(err); }
 			var _this = this;
 			window.resolveLocalFileSystemURI(fileLocation,
 				function(fileEntry){
 					_this.getDirectory(newDirectory).then(
 						function(dir){
 							fileEntry.copyTo(dir, newName,
-								function(fileEntry) {
+								function(fileEntry){
 									fileEntry.file(
 										function(fileObj){
 											def.resolve({
@@ -106,16 +103,16 @@ define([
 												type: fileObj.type
 											});
 										},
-										error
+										def.reject
 									);
 								},
-								error
+								def.reject
 							);
 						},
-						error
+						def.reject
 					);
 				},
-				error
+				def.reject
 			);
 		    return def.promise;
 		},
@@ -128,7 +125,6 @@ define([
 			// returns:
 			//		Promise for File details object
 			var def = new Deferred();
-			var error = function(err) { def.reject(err); }
 			window.resolveLocalFileSystemURI(fileLocation,
 				function(fileEntry){
 					fileEntry.file(
@@ -140,10 +136,10 @@ define([
 								type: fileObj.type
 							});
 						},
-						error
+						def.reject
 					);
 				},
-				error
+				def.reject
 			);
 		    return def.promise;
 		},
@@ -154,17 +150,16 @@ define([
 			//	fileURL: url
 			//		should be in the format file:///mnt/sdcard/SOME_FOLDER/FILE_NAME.EXT
 			var def = new Deferred();
-			var error = function(err) { def.reject(err); }
 			window.resolveLocalFileSystemURI(fileURL,
-				function(fileEntry) {
+				function(fileEntry){
 					fileEntry.remove(
 						function(obj){
 							def.resolve(obj);
 						},
-						error
+						def.reject
 					);
 				},
-				error
+				def.reject
 			);
 			return def.promise;
 		}
