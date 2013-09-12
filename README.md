@@ -8,7 +8,7 @@ No official release yet.
 
 ## Licensing
 
-This project is distributed by the Dojo Foundation and licensed under the Dojo dual license [BSD/AFLv2 license](http://dojotoolkit.org/license).
+This project is distributed by the Dojo Foundation and licensed under the ["New" BSD License](https://github.com/dojo/dojo/blob/master/LICENSE#L13-L41).
 All contributions require a [Dojo Foundation CLA](http://dojofoundation.org/about/claForm).
 
 ## Dependencies
@@ -33,4 +33,5 @@ TODO
 ## Credits
 
 * Christophe Jolif (IBM CCLA)
-* Christophe Mitchell (IBM CCLA)
+* Christopher Mitchell (IBM CCLA)
+* Karl Bishop (IBM CCLA)
