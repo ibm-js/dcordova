@@ -6,10 +6,6 @@
 	"description": "Dojo-Cordova (Phonegap) integration modules",
 	"licenses": [
 		{
-			"type": "AFLv2.1",
-			"url": "http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L43"
-		},
-		{
 			"type": "BSD",
 			"url": "http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L13"
 		}
@@ -19,9 +15,7 @@
 		"url": "https://github.com/ibm-dojo/dcordova.git"
 	},
 	"dependencies": {
-		"dojo": ["1.9"],
-		"dijit": ["1.9"],
-		"dojox": ["1.9"]
+		"dojo": ["1.9"]
 	},
 	"dojoBuild": "dcordova.profile.js"
 }
