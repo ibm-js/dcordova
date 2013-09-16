@@ -1,9 +1,7 @@
 {
 	"name": "dcordova",
-	"version": "1.9",
-	"author": "Karl Bishop, Christophe Jolif",
-	"main": "./main",
-	"description": "Dojo-Cordova (Phonegap) integration modules",
+	"version": "0.1-dev",
+	"description": "This project provides AMD, promise-based wrapper for Cordova APIs useful for AMD-based and/or Dojo-based applications",
 	"licenses": [
 		{
 			"type": "BSD",
@@ -17,5 +15,5 @@
 	"dependencies": {
 		"dojo": ["1.9"]
 	},
-	"dojoBuild": "dcordova.profile.js"
+	"dojoBuild": "package.js"
 }
