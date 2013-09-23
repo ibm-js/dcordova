@@ -1,5 +1,5 @@
-define(["dojo/_base/declare", "dojo/Deferred", "dojo/when", "dojo/store/util/QueryResults", "dojo/store/util/SimpleQueryEngine"],
-	function(declare, Deferred, when, QueryResults, SimpleQueryEngine){
+define(["dojo/_base/declare", "dojo/Deferred", "dojo/store/util/QueryResults", "dojo/store/util/SimpleQueryEngine"],
+	function(declare, Deferred, QueryResults, SimpleQueryEngine){
 
 	return declare(null, {
 		// summary:
@@ -74,7 +74,7 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/when", "dojo/store/util/Que
 					findDeferred.resolve(contacts);
 				},
 				findDeferred, options);
-			when(findDeferred, function(contacts){
+			findDeferred.then(function(contacts){
 				if(self.displayName){
 					var contact, i;
 					for(i = 0; i < contacts.length; i++){
@@ -107,7 +107,7 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/when", "dojo/store/util/Que
 				object.id = directives.id;
 			}
 			if(directives && directives.overwrite === false){
-				when(this.get(object.id), function(contact){
+				this.get(object.id).then(function(contact){
 					if(contact !== null){
 						deferred.reject(new Error("object already exists"));
 					}else{
@@ -139,7 +139,7 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/when", "dojo/store/util/Que
 		remove: function(id){
 			var deferred = new Deferred();
 			var object = this.get(id);
-			when(object, function(object){
+			object.then(function(object){
 				object.remove(function(contact){deferred.resolve(contact);}, function(error){deferred.reject(error);});
 			});
 			return deferred.promise;
