@@ -29,7 +29,14 @@
 //	"cordova-confirm"				Returns true if has native confirm dialog, else false
 //	"cordova-beep"					Returns true if can sound a device beep, else false
 //	"cordova-storage"				Returns true if has local database access, else false
-define(["dojo/has"].concat(window.cordova?["dcordova/deviceReady!"]:[]), function(has){
+define(["dojo/has", "./deviceReady!"], function(has){
+	var capture, platform, version, notification;
+	if(window.device){
+		capture = navigator.device.capture;
+		platform = window.device.platform;
+		version = window.device.version;
+		notification = navigator.notification;
+	}
 	has.add("cordova", window.device ? window.device.cordova : false);
 	has.add("cordova-accelerometer", function(){
 		return !!(has("cordova") && navigator.accelerometer);
@@ -38,16 +45,16 @@ define(["dojo/has"].concat(window.cordova?["dcordova/deviceReady!"]:[]), functio
 		return !!(has("cordova") && navigator.camera);
 	});
 	has.add("cordova-audio", function(){
-		return !!(has("cordova") && navigator.device.capture && navigator.device.capture.captureAudio);
+		return !!(has("cordova") && capture && capture.captureAudio);
 	});
 	has.add("cordova-capture-audio", function(){
-		return !!(has("cordova") && navigator.device.capture && navigator.device.capture.captureAudio);
+		return !!(has("cordova") && capture && capture.captureAudio);
 	});
 	has.add("cordova-capture-image", function(){
-		return !!(has("cordova") && navigator.device.capture && navigator.device.capture.captureImage);
+		return !!(has("cordova") && capture && capture.captureImage);
 	});
 	has.add("cordova-capture-video", function(){
-		return !!(has("cordova") && navigator.device.capture && navigator.device.capture.captureVideo);
+		return !!(has("cordova") && capture && capture.captureVideo);
 	});
 	has.add("cordova-compass", function(){
 		return !!(has("cordova") && navigator.compass);
@@ -68,25 +75,25 @@ define(["dojo/has"].concat(window.cordova?["dcordova/deviceReady!"]:[]), functio
 	});
 	// do we want cordova specific flags here? Should be agnostic flags
 	has.add("cordova-android", function(){
-		return (window.device && window.device.platform.match(/android/i) ) ? window.device.version : false;
+		return (window.device && platform.match(/android/i) ) ? version : false;
 	});
 	has.add("cordova-iphone", function(){
-		return (window.device && window.device.platform.match(/iphone/i) ) ? window.device.version : false;
+		return (window.device && platform.match(/iphone/i) ) ? version : false;
 	});
 	has.add("cordova-ipad", function(){
-		return (window.device && window.device.platform.match(/ipad/i) ) ? window.device.version : false;
+		return (window.device && platform.match(/ipad/i) ) ? version : false;
 	});
 	has.add("cordova-ios", function(){
 		return has("cordova-iphone") || has("cordova-ipad");
 	});
 	has.add("cordova-blackberry", function(){
-		return (window.device && window.device.platform.match(/blackberry/i) ) ? window.device.version : false;
+		return (window.device && platform.match(/blackberry/i) ) ? version : false;
 	});
 	has.add("cordova-windows", function(){
-		return (window.device && window.device.platform.match(/win/i) ) ? window.device.version : false;
+		return (window.device && platform.match(/win/i) ) ? version : false;
 	});
 	has.add("cordova-webos", function(){
-		return (window.device && window.device.platform.match(/webod/i) ) ? window.device.version : false;
+		return (window.device && platform.match(/webod/i) ) ? version : false;
 	});
 	has.add("cordova-file", function(){
 		return !!(has("cordova") && window.requestFileSystem);
@@ -98,13 +105,13 @@ define(["dojo/has"].concat(window.cordova?["dcordova/deviceReady!"]:[]), functio
 		return !!(has("cordova") && window.Media);
 	});
 	has.add("cordova-alert", function(){
-		return !!(has("cordova") && navigator.notification && navigator.notification.alert);
+		return !!(has("cordova") && notification && notification.alert);
 	});
 	has.add("cordova-confirm", function(){
-		return !!(has("cordova") && navigator.notification && navigator.notification.confirm);
+		return !!(has("cordova") && notification && notification.confirm);
 	});
 	has.add("cordova-beep", function(){
-		return !!(has("cordova") && navigator.notification && navigator.notification.beep);
+		return !!(has("cordova") && notification && notification.beep);
 	});
 	has.add("cordova-storage", function(){
 		return !!(has("cordova") && window.openDatabase);
