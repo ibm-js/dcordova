@@ -26,6 +26,11 @@ This project requires the following other projects to run:
 
  git clone git://github.com/ibm-dojo/dcordova.git
 
+ * Bower installation:
+
+  * bower install dcordova
+
+
 ## Documentation
 
 TODO
