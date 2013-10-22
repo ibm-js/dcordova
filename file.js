@@ -1,5 +1,7 @@
 define(["dojo/Deferred"], function (Deferred) {
 
+	/* global LocalFileSystem:true */
+
 	return {
 		// summary:
 		//		Promised based wrapper for Cordova File API

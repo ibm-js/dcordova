@@ -1,6 +1,8 @@
 define(["dojo/_base/declare", "dojo/Deferred", "dojo/store/util/QueryResults", "dojo/store/util/SimpleQueryEngine"],
 	function (declare, Deferred, QueryResults, SimpleQueryEngine) {
 
+	/* global ContactFindOptions:true */
+
 	return declare(null, {
 		// summary:
 		//		This is a dojo/store wrapper for Cordova Contacts API.
@@ -95,9 +97,7 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/store/util/QueryResults", "
 		// All the code below depends on Cordova Contacts API
 
 		_find: function (query, success, deferred, options) {
-			/* jshint -W117 */
 			var opts = new ContactFindOptions();
-			/*jshint +W117 */
 			var fields = (options && options.contactFields) || this.contactFields;
 			opts.filter = query;
 			opts.multiple = (options && options.hasOwnProperty("multiple")) ? options.multiple : true;

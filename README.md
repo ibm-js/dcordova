@@ -1,4 +1,4 @@
-# dcordova
+# dcordova [![Build Status](https://travis-ci.org/ibm-dojo/dcordova.png?branch=master)](https://travis-ci.org/ibm-dojo/dcordova)
 
 This project provides AMD, promise-based wrapper for Cordova APIs useful for AMD-based and/or Dojo-based applications.
 

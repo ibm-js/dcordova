@@ -1,3 +1,4 @@
+/* jshint -W098 */
 var profile = (function () {
 	var testResourceRe = /\/tests\//,
 
