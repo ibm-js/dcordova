@@ -1,10 +1,10 @@
-define(["dojo/Deferred"], function(Deferred){
+define(["dojo/Deferred"], function (Deferred) {
 
 	return {
 		// summary:
 		//		Promised based wrapper for Cordova File API
 
-		getFile: function(filename){
+		getFile: function (filename) {
 			// summary:
 			//		Get a file by name
 			// filename:
@@ -15,11 +15,11 @@ define(["dojo/Deferred"], function(Deferred){
 			// |	file.getFile("myFile").then(function(file) { ... }, function(err) { ... } );
 			var def = new Deferred();
 			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
-				function(fs){
-					fs.root.getFile(filename, {create:true, exclusive:false},
-						function(fileEntry){
+				function (fs) {
+					fs.root.getFile(filename, {create: true, exclusive: false},
+						function (fileEntry) {
 							fileEntry.file(
-								function(file){
+								function (file) {
 									file.url = fileEntry.toURL();
 									def.resolve(file);
 								},
@@ -35,7 +35,7 @@ define(["dojo/Deferred"], function(Deferred){
 		},
 
 		//-----------------------------------------------------------------------------------------
-		getDirectory: function(/*String*/dirpath){
+		getDirectory: function (/*String*/dirpath) {
 			// summary:
 			//		Get (or make) directory pointed to by path
 			// dirpath:
@@ -45,17 +45,19 @@ define(["dojo/Deferred"], function(Deferred){
 			var def = new Deferred();
 			var dirs = dirpath.split("/");
 			//-- Get rid of any empty segments.
-			for(var x = dirs.length-1; x >= 0; x--){
-				if(!dirs[x].length){ dirs.splice(x,1); }
+			for (var x = dirs.length - 1; x >= 0; x--) {
+				if (!dirs[x].length) {
+					dirs.splice(x, 1);
+				}
 			}
 
-			var getDir = function(de, dirs, callback){
-				var dir = dirs.splice(0,1)[0];  // returns array, want 1st (single) node
-				de.getDirectory(dir, {create:true, exclusive:false},
-					function(d){
-						if(dirs.length){
+			var getDir = function (de, dirs, callback) {
+				var dir = dirs.splice(0, 1)[0];  // returns array, want 1st (single) node
+				de.getDirectory(dir, {create: true, exclusive: false},
+					function (d) {
+						if (dirs.length) {
 							getDir(d, dirs, callback);
-						}else{
+						} else {
 							callback(d);
 						}
 					},
@@ -64,8 +66,8 @@ define(["dojo/Deferred"], function(Deferred){
 			};
 
 			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
-				function(fs){
-					getDir(fs.root, dirs, function(finalDir){
+				function (fs) {
+					getDir(fs.root, dirs, function (finalDir) {
 						def.resolve(finalDir);
 					});
 				},
@@ -74,7 +76,7 @@ define(["dojo/Deferred"], function(Deferred){
 			return def.promise;
 		},
 
-		copyFile: function(fileLocation, newDirectory, newName){
+		copyFile: function (fileLocation, newDirectory, newName) {
 			// summary:
 			//		Copy file to new path/name
 			// fileLocation:
@@ -86,13 +88,13 @@ define(["dojo/Deferred"], function(Deferred){
 			var def = new Deferred();
 			var self = this;
 			window.resolveLocalFileSystemURI(fileLocation,
-				function(fileEntry){
+				function (fileEntry) {
 					self.getDirectory(newDirectory).then(
-						function(dir){
+						function (dir) {
 							fileEntry.copyTo(dir, newName,
-								function(fileEntry){
+								function (fileEntry) {
 									fileEntry.file(
-										function(fileObj){
+										function (fileObj) {
 											def.resolve({
 												name: fileObj.name,
 												size: fileObj.size,
@@ -114,7 +116,7 @@ define(["dojo/Deferred"], function(Deferred){
 			return def.promise;
 		},
 
-		getFileDetails: function(fileLocation){
+		getFileDetails: function (fileLocation) {
 			// summary:
 			//		Get details ona  file
 			// fileLocation: url
@@ -123,9 +125,9 @@ define(["dojo/Deferred"], function(Deferred){
 			//		Promise for File details object
 			var def = new Deferred();
 			window.resolveLocalFileSystemURI(fileLocation,
-				function(fileEntry){
+				function (fileEntry) {
 					fileEntry.file(
-						function(fileObj){
+						function (fileObj) {
 							def.resolve({
 								name: fileObj.name,
 								size: fileObj.size,
@@ -141,16 +143,16 @@ define(["dojo/Deferred"], function(Deferred){
 			return def.promise;
 		},
 
-		deleteFile: function(/* String */fileURL){
+		deleteFile: function (/* String */fileURL) {
 			//	summary:
 			//
 			//	fileURL: url
 			//		should be in the format file:///mnt/sdcard/SOME_FOLDER/FILE_NAME.EXT
 			var def = new Deferred();
 			window.resolveLocalFileSystemURI(fileURL,
-				function(fileEntry){
+				function (fileEntry) {
 					fileEntry.remove(
-						function(obj){
+						function (obj) {
 							def.resolve(obj);
 						},
 						def.reject
