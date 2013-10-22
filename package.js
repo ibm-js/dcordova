@@ -9,7 +9,7 @@ var profile = (function () {
 				"dcordova/tests": 1
 			};
 			return (mid in list) || /^dcordova\/resources\//.test(mid) || /(png|jpg|jpeg|gif|tiff)$/.test(filename);
-		}
+		};
 
 	return {
 		resourceTags: {
