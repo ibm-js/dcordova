@@ -5,7 +5,7 @@
 	"licenses": [
 		{
 			"type": "BSD",
-			"url": "http://trac.dojotoolkit.org/browser/dojo/trunk/LICENSE#L13"
+			"url": "https://github.com/ibm-dojo/dcordova/blob/master/LICENSE"
 		}
 	],
 	"repository": {
