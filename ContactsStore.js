@@ -90,7 +90,7 @@ define(["dojo/_base/declare", "dojo/Deferred", "dojo/store/util/QueryResults", "
 			}, function (error) {
 				deferred.reject(error);
 			});
-			/* jshint -W064 */
+			/* jshint newcap: false */
 			return QueryResults(deferred.promise);
 		},
 
