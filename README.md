@@ -1,4 +1,4 @@
-# dcordova [![Build Status](https://travis-ci.org/ibm-dojo/dcordova.png?branch=master)](https://travis-ci.org/ibm-dojo/dcordova)
+# dcordova [![Build Status](https://travis-ci.org/ibm-js/dcordova.png?branch=master)](https://travis-ci.org/ibm-js/dcordova)
 
 This project provides AMD, promise-based wrapper for Cordova APIs useful for AMD-based and/or Dojo-based applications.
 
@@ -8,7 +8,7 @@ No official release yet.
 
 ## Licensing
 
-This project is distributed by the Dojo Foundation and licensed under the ["New" BSD License](https://github.com/ibm-dojo/dcordova/blob/master/LICENSE).
+This project is distributed by the Dojo Foundation and licensed under the ["New" BSD License](./LICENSE).
 All contributions require a [Dojo Foundation CLA](http://dojofoundation.org/about/claForm).
 
 ## Dependencies
@@ -18,17 +18,18 @@ This project requires the following other projects to run:
 
 ## Installation
 
-* Manual installation by dropping dcordova as a sibling of the top level Dojo modules:
- * dojo
- * dcordova
+_Bower_ release installation:
 
- To install the latest master, go to the root Dojo installation directory and clone dcordova from github
+    $ bower install dcordova
 
- git clone git://github.com/ibm-dojo/dcordova.git
+_Manual_ master installation:
 
-* Bower installation:
+    $ git clone git://github.com/ibm-js/dcordova.git
 
- * bower install dcolor
+Then install dependencies with bower (or manually from github if you prefer to):
+
+	$ cd dcordova
+	$ bower install
 
 ## Documentation
 
