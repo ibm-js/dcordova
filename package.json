@@ -5,12 +5,12 @@
 	"licenses": [
 		{
 			"type": "BSD",
-			"url": "https://github.com/ibm-dojo/dcordova/blob/master/LICENSE"
+			"url": "https://github.com/ibm-js/dcordova/blob/master/LICENSE"
 		}
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/ibm-dojo/dcordova.git"
+		"url": "https://github.com/ibm-js/dcordova.git"
 	},
 	"dependencies": {
 		"dojo": ["1.9"]
